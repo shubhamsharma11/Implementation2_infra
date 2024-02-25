@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  web:
+   image: stackdemo24:latest
+   build: ./code
+   ports:
+    - "96-100:8000"
+  redis:
+   image: redis:alpine
