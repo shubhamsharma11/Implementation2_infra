@@ -1,0 +1,27 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/'
+
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/'
+    environmentServiceNameAzureRM: 'svc_connection'
