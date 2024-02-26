@@ -24,4 +24,4 @@ steps:
     provider: 'azurerm'
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/'
-    environmentServiceNameAzureRM: 'svc_connection'
+    environmentServiceNameAzureRM: 'svc_connection_ext'
