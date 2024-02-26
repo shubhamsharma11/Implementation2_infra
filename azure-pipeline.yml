@@ -13,6 +13,11 @@ steps:
     version: '3.x'
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
+- script: |
+   sudo apt update -y
+   sudo apt install unzip -y
+  displayName: 'Command Line Script'
+
 - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
   displayName: 'Install Terraform latest'
 
