@@ -17,13 +17,13 @@ variable "vnet_name" {
 }
 
 variable "subnet_ip" {
-    type = list
-    default = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+    type = string
+    default = "10.0.0.0/24"
 }
 
 variable "subnet_name" {
-    type = list
-    default = ["subnet_test_1", "subnet_test_2", "subnet_test_3"]
+    type = string
+    default = "subnet_dev"
 }
 
 variable "boot_diagnostics_sa_type" {

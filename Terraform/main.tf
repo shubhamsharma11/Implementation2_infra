@@ -66,19 +66,19 @@ resource "azurerm_network_interface" "nic01" {
     resource_group_name = azurerm_resource_group.rgdev.name
     ip_configuration {
         name = "internal"
-        subnet_id = azurerm_subnet.subnet01[0].id
+        subnet_id = azurerm_subnet.subnet01.id
         private_ip_address_allocation = "Dynamic"
         public_ip_address_id = azurerm_public_ip.publicip01.id
     }
 }
 
 resource "azurerm_subnet" "subnet01" {
-    count = length(var.subnet_ip)
-    name = var.subnet_name[count.index]
+    name = var.subnet_name
     resource_group_name = azurerm_resource_group.rgdev.name
     virtual_network_name = azurerm_virtual_network.vnet01.name
-    address_prefixes = [var.subnet_ip[count.index]]
+    address_prefixes = [var.subnet_ip]
 }
+
 # ---------------------------------------------------------------------------
 # This line is to follow company policy as boot diagnostics should be enabled
 /*Create a storage account to create blob storage for the boot diag output*/
@@ -130,12 +130,69 @@ resource "azurerm_virtual_machine" "vm01" {
     }
 } 
 
-# Ansible Installation Script
-resource "null_resource" "ansible_installation" {
+resource "null_resource" "copy_ansible_yaml" {
+  triggers = {
+    always_run = timestamp()
+  }
+    provisioner "file" {
+      source = "deploy.yaml"
+      destination = "/tmp/deploy.yaml"
+
+    connection {
+      type        = "ssh"
+      user        = var.connection["username"]
+      password    = var.connection["password"]
+      host        = azurerm_public_ip.publicip01.ip_address
+    }
+  }
+}
+
+resource "null_resource" "copy_ansible_inventory" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "file" {
+    content = <<EOF
+    [localhost]
+    ${azurerm_network_interface.nic01.private_ip_address}
+    EOF
+    destination = "/tmp/inventory"
+    
+    connection {
+      type        = "ssh"
+      user        = var.connection["username"]
+      password    = var.connection["password"]
+      host        = azurerm_public_ip.publicip01.ip_address
+    }
+  }
+}
+
+resource "null_resource" "copy_script_file" {
+  triggers = {
+    always_run = timestamp()
+  }
+  provisioner "file" {
+    source = "script.sh"
+    destination = "/tmp/script.sh"
+    
+    connection {
+      type        = "ssh"
+      user        = var.connection["username"]
+      password    = var.connection["password"]
+      host        = azurerm_public_ip.publicip01.ip_address
+    }
+  }
+}
+
+resource "null_resource" "execute_script" {
+  triggers = {
+    always_run = timestamp()
+  }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y ansible",
+      "chmod +x /tmp/script.sh ",
+      "/tmp/script.sh"
     ]
 
     connection {
@@ -145,77 +202,4 @@ resource "null_resource" "ansible_installation" {
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
-
-  depends_on = [azurerm_virtual_machine.vm01]
-}
-
-resource "null_resource" "copy_ansible_yaml" {
-  triggers = {
-    always_run = timestamp()
-  }
-    provisioner "file" {
-      source = "deploy.yaml"
-      destination = "/tmp/deploy.yaml"
-    connection {
-      type = "ssh"
-      user = "adminuser"
-      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
-      host = azurerm_public_ip.example[0].ip_address
-    }
-  }
-}
-resource "null_resource" "copy_ansible_inventory" {
- triggers = {
- always_run = timestamp()
- }
- provisioner "file" {
- content = <<EOF
- [localhost]
- ${azurerm_network_interface.example[0].private_ip_address} # Master Node Private IP
- [Node1]
- ${azurerm_network_interface.example[1].private_ip_address} # Node 1 Private IP
- [Node2]
- ${azurerm_network_interface.example[2].private_ip_address} # Node 2 Private IP
- EOF
- destination = "/tmp/inventory"
- connection {
- type = "ssh"
- user = "adminuser"
- private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
- host = azurerm_public_ip.example[0].ip_address
- }
- }
-}
-resource "null_resource" "copy_script_file" {
- triggers = {
- always_run = timestamp()
- }
- provisioner "file" {
- source = "script.sh"
- destination = "/tmp/script.sh"
- connection {
- type = "ssh"
- user = "adminuser"
- private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
- host = azurerm_public_ip.example[0].ip_address
- }
- }
-}
-resource "null_resource" "execute_script" {
- triggers = {
- always_run = timestamp()
- }
- provisioner "remote-exec" {
- inline = [
- "chmod +x /tmp/script.sh ",
- "/tmp/script.sh"
- ]
-
- connection {
- type = "ssh"
- user = "adminuser"
- private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
- host = azurerm_public_ip.example[0].ip_address
- }
- }
 }

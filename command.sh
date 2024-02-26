@@ -4,7 +4,7 @@ docker-compose build
 az login
 
 # Set the subscription
-az account set --subscription 3b1bfc9b-7c37-48b7-b852-c4208989b7d1
+az account set --subscription 14f56a24-f129-441e-a95b-0df01d75c3a7
 
 # Create service principle
 az ad sp create-for-rbac --name spDemo01 --role Contributor --scopes /subscriptions/3b1bfc9b-7c37-48b7-b852-c4208989b7d1
@@ -44,3 +44,27 @@ kubectl expose deployment nginx-deployment --name=vueapp-service --type=LoadBala
 
 
 az aks create -g rgDemo01 -n myAKSCluster --enable-managed-identity --node-count 1 --node-vm-size Standard_D2s_v3 --enable-addons monitoring --enable-msi-auth-for-monitoring  --attach-acr acrshubdemo01 --generate-ssh-keys
+
+
+
+
+
+
+# Ansible Installation Script
+#   resource "null_resource" "ansible_installation" {
+#   provisioner "remote-exec" {
+#       inline = [
+#       "sudo apt-get update",
+#       "sudo apt-get install -y ansible",
+#       ]
+#
+#       connection {
+#       type        = "ssh"
+#       user        = var.connection["username"]
+#       password    = var.connection["password"]
+#       host        = azurerm_public_ip.publicip01.ip_address
+#       }
+#   }
+#
+#   depends_on = [azurerm_virtual_machine.vm01]
+#   }
