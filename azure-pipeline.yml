@@ -13,15 +13,47 @@ steps:
     version: '3.x'
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: TerraformTaskV1@0
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/'
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
+  displayName: 'Install Terraform latest'
 
-- task: TerraformTaskV1@0
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+  displayName: 'Terraform : init'
   inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform/'
-    environmentServiceNameAzureRM: 'svc_connection_ext'
+    backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
+    backendAzureRmResourceGroupName: 'rg_agent'
+    backendAzureRmStorageAccountName: storageaccountagentshub
+    backendAzureRmContainerName: 'agent-container'
+    backendAzureRmKey: terraform.tfstate
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+  displayName: 'Terraform : plan'
+  inputs:
+    command: plan
+    environmentServiceNameAzureRM: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
+    backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
+    backendAzureRmResourceGroupName: 'rg_agent'
+    backendAzureRmStorageAccountName: storageaccountagentshub
+    backendAzureRmContainerName: 'agent-container'
+    backendAzureRmKey: terraform.tfstate
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+  displayName: 'Terraform : validate'
+  inputs:
+    command: validate
+    backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
+    backendAzureRmResourceGroupName: 'rg_agent'
+    backendAzureRmStorageAccountName: storageaccountagentshub
+    backendAzureRmContainerName: 'agent-container'
+    backendAzureRmKey: terraform.tfstate
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+  displayName: 'Terraform : apply'
+  inputs:
+    command: apply
+    environmentServiceNameAzureRM: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
+    backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
+    backendAzureRmResourceGroupName: 'rg_agent'
+    backendAzureRmStorageAccountName: storageaccountagentshub
+    backendAzureRmContainerName: 'agent-container'
+    backendAzureRmKey: terraform.tfstate
+
