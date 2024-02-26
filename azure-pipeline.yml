@@ -24,6 +24,7 @@ steps:
 - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
   displayName: 'Terraform : init'
   inputs:
+    workingDirectory: Terraform
     backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
     backendAzureRmResourceGroupName: 'rg_agent'
     backendAzureRmStorageAccountName: storageaccountagentshub
@@ -34,6 +35,7 @@ steps:
   displayName: 'Terraform : plan'
   inputs:
     command: plan
+    workingDirectory: Terraform
     environmentServiceNameAzureRM: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
     backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
     backendAzureRmResourceGroupName: 'rg_agent'
@@ -45,6 +47,7 @@ steps:
   displayName: 'Terraform : validate'
   inputs:
     command: validate
+    workingDirectory: Terraform
     backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
     backendAzureRmResourceGroupName: 'rg_agent'
     backendAzureRmStorageAccountName: storageaccountagentshub
@@ -55,6 +58,7 @@ steps:
   displayName: 'Terraform : apply'
   inputs:
     command: apply
+    workingDirectory: Terraform
     environmentServiceNameAzureRM: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
     backendServiceArm: 'npstackro-1676009261708 (14f56a24-f129-441e-a95b-0df01d75c3a7)'
     backendAzureRmResourceGroupName: 'rg_agent'
