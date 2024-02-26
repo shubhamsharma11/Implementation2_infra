@@ -148,3 +148,74 @@ resource "null_resource" "ansible_installation" {
 
   depends_on = [azurerm_virtual_machine.vm01]
 }
+
+resource "null_resource" "copy_ansible_yaml" {
+  triggers = {
+    always_run = timestamp()
+  }
+    provisioner "file" {
+      source = "deploy.yaml"
+      destination = "/tmp/deploy.yaml"
+    connection {
+      type = "ssh"
+      user = "adminuser"
+      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
+      host = azurerm_public_ip.example[0].ip_address
+    }
+  }
+}
+resource "null_resource" "copy_ansible_inventory" {
+ triggers = {
+ always_run = timestamp()
+ }
+ provisioner "file" {
+ content = <<EOF
+ [localhost]
+ ${azurerm_network_interface.example[0].private_ip_address} # Master Node Private IP
+ [Node1]
+ ${azurerm_network_interface.example[1].private_ip_address} # Node 1 Private IP
+ [Node2]
+ ${azurerm_network_interface.example[2].private_ip_address} # Node 2 Private IP
+ EOF
+ destination = "/tmp/inventory"
+ connection {
+ type = "ssh"
+ user = "adminuser"
+ private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
+ host = azurerm_public_ip.example[0].ip_address
+ }
+ }
+}
+resource "null_resource" "copy_script_file" {
+ triggers = {
+ always_run = timestamp()
+ }
+ provisioner "file" {
+ source = "script.sh"
+ destination = "/tmp/script.sh"
+ connection {
+ type = "ssh"
+ user = "adminuser"
+ private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
+ host = azurerm_public_ip.example[0].ip_address
+ }
+ }
+}
+resource "null_resource" "execute_script" {
+ triggers = {
+ always_run = timestamp()
+ }
+ provisioner "remote-exec" {
+ inline = [
+ "chmod +x /tmp/script.sh ",
+ "/tmp/script.sh"
+ ]
+
+ connection {
+ type = "ssh"
+ user = "adminuser"
+ private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}"
+ host = azurerm_public_ip.example[0].ip_address
+ }
+ }
+}
