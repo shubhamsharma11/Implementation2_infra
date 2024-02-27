@@ -126,7 +126,11 @@ resource "azurerm_virtual_machine" "vm01" {
         admin_password = var.connection["password"]
     }
     os_profile_linux_config {
-        disable_password_authentication = false
+       disable_password_authentication = true
+       ssh_keys {
+         path = "/home/adminuser/.ssh/authorized_keys"
+         key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDnjMXUJajc2BlJ5ggsMPjrUdNWfP93eXbMNw81LgiBtipCV/e90630vvlD/Eym2pLxL8FU65vUxn0WRRvttB5ntzke4toQ4WjoRtvQUrRBdAN0PzCeAeI5cqhO4kznYwxqS/ZvquMAp6e38Q37JpsDmR93h/IP5R1xbPoRsW1/Nl3PKmSdYde3ZxS8ZDrIAOUyR6ZpffFh//ONCV1Y1oNf0SfQbv86BawOChclXqNcRsjDm6Wr1P8kbj+vrtVrl2mJB8cMv2Dz7KUN+othW/Fti1ABhXhKzRpMDKpxbqfUUgY7fF+KCrh2QJa16IBk/w0yZGPRzsL5zJiZNh5F68Mx"
+       }
     }
 } 
 
@@ -141,7 +145,7 @@ resource "null_resource" "copy_ansible_yaml" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      password    = var.connection["password"]
+      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
@@ -163,7 +167,7 @@ resource "null_resource" "copy_ansible_inventory" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      password    = var.connection["password"]
+      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
@@ -181,7 +185,7 @@ resource "null_resource" "copy_script_file" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      password    = var.connection["password"]
+      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
@@ -201,7 +205,7 @@ resource "null_resource" "execute_script" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      password    = var.connection["password"]
+      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
