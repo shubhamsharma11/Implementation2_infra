@@ -16,6 +16,7 @@ steps:
 - script: |
    sudo apt update -y
    sudo apt install unzip -y
+   ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa -N ""
   displayName: 'Command Line Script'
 
 - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
