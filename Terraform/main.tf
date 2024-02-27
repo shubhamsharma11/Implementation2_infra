@@ -145,7 +145,7 @@ resource "null_resource" "copy_ansible_yaml" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
+      private_key = "${file("/home/testadmin/.ssh/id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
@@ -167,7 +167,7 @@ resource "null_resource" "copy_ansible_inventory" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
+      private_key = "${file("/home/testadmin/.ssh/id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
@@ -185,7 +185,7 @@ resource "null_resource" "copy_script_file" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
+      private_key = "${file("/home/testadmin/.ssh/id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
@@ -205,7 +205,7 @@ resource "null_resource" "execute_script" {
     connection {
       type        = "ssh"
       user        = var.connection["username"]
-      private_key = "${file("C:\\Users\\VMUser\\.ssh\\id_rsa")}" 
+      private_key = "${file("/home/testadmin/.ssh/id_rsa")}" 
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
