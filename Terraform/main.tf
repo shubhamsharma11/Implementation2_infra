@@ -155,7 +155,7 @@ resource "null_resource" "copy_ansible_inventory" {
   provisioner "file" {
     content = <<EOF
     [localhost]
-    ${azurerm_network_interface.nic01.private_ip_address}
+    ${azurerm_public_ip.publicip01.ip_address}
     EOF
     destination = "/tmp/inventory"
     
