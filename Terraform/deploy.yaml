@@ -1,6 +1,6 @@
 ---
 - name: Install Prerequisites and Configure Azure DevOps Agent
-  hosts: your_vm  # Replace 'your_vm' with the appropriate inventory group or IP address
+  hosts: all
 
   tasks:
     - name: Update apt packages
@@ -34,8 +34,7 @@
     - name: Configure Azure DevOps agent
       become: true
       shell: |
-        sudo ./config.sh --unattended --url https://dev.azure.com/Shubham1708698304552/ --auth pat --token x4x4wzwy7w53ikj54ipzhbnmjjnfohcewotpag7zx27ugkgusqmq --pool Default --agent LinuxAgent01 --acceptTeeEula
-        ./run.sh
+        sudo ./config.sh --unattended --url https://dev.azure.com/Shubham1708698304552/ --auth pat --token x4x4wzwy7w53ikj54ipzhbnmjjnfohcewotpag7zx27ugkgusqmq --pool Default --agent LinuxAgent01 --acceptTeeEula --runAsService --windowsLogonAccount 'testadmin' --windowsLogonPassword 'Password1234!'
       args:
         chdir: /myagent
         executable: /bin/bash
