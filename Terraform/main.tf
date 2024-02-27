@@ -145,6 +145,7 @@ resource "null_resource" "copy_ansible_yaml" {
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
+  depends_on = [azurerm_virtual_machine.vm01]
 }
 
 resource "null_resource" "copy_ansible_inventory" {
@@ -166,6 +167,7 @@ resource "null_resource" "copy_ansible_inventory" {
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
+  depends_on = [azurerm_virtual_machine.vm01]
 }
 
 resource "null_resource" "copy_script_file" {
@@ -183,6 +185,7 @@ resource "null_resource" "copy_script_file" {
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
+  depends_on = [azurerm_virtual_machine.vm01]
 }
 
 resource "null_resource" "execute_script" {
@@ -202,4 +205,5 @@ resource "null_resource" "execute_script" {
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
+  depends_on = [azurerm_virtual_machine.vm01]
 }
