@@ -21,10 +21,10 @@
           - software-properties-common
         state: present
 
-    - name: Install Azure CLI
+    - name: Add Microsoft APT repository
       become: true
-      apt:
-        name: azure-cli
+      apt_repository:
+        repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli {{ ansible_distribution_release }} main"
         state: present
 
     - name: Download and install Azure DevOps agent
