@@ -21,12 +21,6 @@
           - software-properties-common
         state: present
 
-    - name: Add Microsoft APT repository
-      become: true
-      apt_repository:
-        repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli {{ ansible_distribution_release }} main"
-        state: present
-
     - name: Download and install Azure DevOps agent
       become: true
       shell: |
@@ -40,7 +34,14 @@
       become: true
       shell: |
         ./config.sh --unattended --url https://dev.azure.com/Shubham1708698304552/ --auth pat --token x4x4wzwy7w53ikj54ipzhbnmjjnfohcewotpag7zx27ugkgusqmq --pool Default --agent LinuxAgent01 --acceptTeeEula --replace
-        ./run.sh
+      args:
+        chdir: /myagent
+        executable: /bin/bash
+
+    - name: Install Azure CLI
+      become: true
+      shell: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       args:
         chdir: /myagent
         executable: /bin/bash
