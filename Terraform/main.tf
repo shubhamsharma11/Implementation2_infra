@@ -205,5 +205,5 @@ resource "null_resource" "execute_script" {
       host        = azurerm_public_ip.publicip01.ip_address
     }
   }
-  depends_on = [azurerm_virtual_machine.vm01]
+  depends_on = [null_resource.copy_script_file]
 }
