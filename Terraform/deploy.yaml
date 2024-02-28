@@ -21,10 +21,17 @@
           - software-properties-common
         state: present
 
+    - name: Add Microsoft APT repository
+      become: true
+      shell: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      args:
+        executable: /bin/bash
+
     - name: Download and install Azure DevOps agent
       become: true
       shell: |
-        mkdir agent01 && cd agent01
+        mkdir myagent && cd myagent
         wget -O vsts-agent-linux-x64-3.234.0.tar.gz https://vstsagentpackage.azureedge.net/agent/3.234.0/vsts-agent-linux-x64-3.234.0.tar.gz
         tar zxvf vsts-agent-linux-x64-3.234.0.tar.gz
       args:
@@ -33,17 +40,10 @@
     - name: Configure Azure DevOps agent
       become: true
       shell: |
-        cd agent01
-        ./config.sh --unattended --url https://dev.azure.com/Shubham1708698304552/ --auth pat --token x4x4wzwy7w53ikj54ipzhbnmjjnfohcewotpag7zx27ugkgusqmq --pool Default --agent LinuxSelfHostAgent --acceptTeeEula --replace
+        ./config.sh --unattended --url https://dev.azure.com/Shubham1708698304552/ --auth pat --token x4x4wzwy7w53ikj54ipzhbnmjjnfohcewotpag7zx27ugkgusqmq --pool Default --agent LinuxAgent01 --acceptTeeEula --replace
+        ./run.sh
       args:
-        executable: /bin/bash
-
-    - name: Install Azure CLI
-      become: true
-      shell: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      args:
-        chdir: /agent01
+        chdir: /myagent
         executable: /bin/bash
 
     - name: Install kubectl
