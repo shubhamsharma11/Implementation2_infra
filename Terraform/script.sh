@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Update package lists
-apt update
+sudo apt update
 
 # Install necessary dependencies
-apt install -y software-properties-common
+sudo apt install -y software-properties-common
 
 # Add Ansible repository
-apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt-add-repository --yes --update ppa:ansible/ansible
 
 # Install Ansible
-apt install -y ansible
+sudo apt install -y ansible
 
 # Display Ansible version
 ansible --version
