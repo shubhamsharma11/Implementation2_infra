@@ -19,6 +19,5 @@ echo "Ansible has been successfully installed."
 
 cd /tmp
 ls
-cat inventory
-ansible-playbook -i inventory deploy.yaml --ssh-extra-args='-o StrictHostKeyChecking=no'
+ansible-playbook -i localhost deploy.yaml --ssh-extra-args='-o StrictHostKeyChecking=no'
 echo "Ansible Playbook Executed Successully !!!"

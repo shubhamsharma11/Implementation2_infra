@@ -148,27 +148,27 @@ resource "null_resource" "copy_ansible_yaml" {
   depends_on = [azurerm_virtual_machine.vm01]
 }
 
-resource "null_resource" "copy_ansible_inventory" {
-  triggers = {
-    always_run = timestamp()
-  }
+# resource "null_resource" "copy_ansible_inventory" {
+#   triggers = {
+#     always_run = timestamp()
+#   }
 
-  provisioner "file" {
-    content = <<EOF
-    [localhost]
-    ${azurerm_public_ip.publicip01.ip_address}
-    EOF
-    destination = "/tmp/inventory"
+#   provisioner "file" {
+#     content = <<EOF
+#     [localhost]
+#     ${azurerm_public_ip.publicip01.ip_address}
+#     EOF
+#     destination = "/tmp/inventory"
     
-    connection {
-      type        = "ssh"
-      user        = var.connection["username"]
-      password    = var.connection["password"]
-      host        = azurerm_public_ip.publicip01.ip_address
-    }
-  }
-  depends_on = [azurerm_virtual_machine.vm01]
-}
+#     connection {
+#       type        = "ssh"
+#       user        = var.connection["username"]
+#       password    = var.connection["password"]
+#       host        = azurerm_public_ip.publicip01.ip_address
+#     }
+#   }
+#   depends_on = [azurerm_virtual_machine.vm01]
+# }
 
 resource "null_resource" "copy_script_file" {
   triggers = {
