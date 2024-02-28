@@ -1,6 +1,6 @@
 ---
 - name: Install Prerequisites and Configure Azure DevOps Agent
-  hosts: all
+  hosts: localhost
 
   tasks:
     - name: Update apt packages
@@ -12,8 +12,13 @@
       become: true
       apt:
         name:
-          - terraform
           - docker.io
+          - docker-compose
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
         state: present
 
     - name: Install Azure CLI
@@ -38,4 +43,20 @@
         ./run.sh
       args:
         chdir: /myagent
+        executable: /bin/bash
+
+    - name: Install kubectl
+      become: true
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      args:
+        executable: /bin/bash
+
+    - name: Install Docker Compose
+      become: true
+      shell: |
+        sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+      args:
         executable: /bin/bash
