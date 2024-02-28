@@ -24,7 +24,7 @@
     - name: Download and install Azure DevOps agent
       become: true
       shell: |
-        mkdir myagent && cd myagent
+        mkdir agent01 && cd agent01
         wget -O vsts-agent-linux-x64-3.234.0.tar.gz https://vstsagentpackage.azureedge.net/agent/3.234.0/vsts-agent-linux-x64-3.234.0.tar.gz
         tar zxvf vsts-agent-linux-x64-3.234.0.tar.gz
       args:
@@ -33,7 +33,8 @@
     - name: Configure Azure DevOps agent
       become: true
       shell: |
-        ./config.sh --unattended --url https://dev.azure.com/Shubham1708698304552/ --auth pat --token x4x4wzwy7w53ikj54ipzhbnmjjnfohcewotpag7zx27ugkgusqmq --pool Default --agent LinuxAgent01 --acceptTeeEula --replace
+        cd agent01
+        ./config.sh --unattended --url https://dev.azure.com/Shubham1708698304552/ --auth pat --token x4x4wzwy7w53ikj54ipzhbnmjjnfohcewotpag7zx27ugkgusqmq --pool Default --agent LinuxSelfHostAgent --acceptTeeEula --replace
       args:
         executable: /bin/bash
 
@@ -42,7 +43,7 @@
       shell: |
         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       args:
-        chdir: /myagent
+        chdir: /agent01
         executable: /bin/bash
 
     - name: Install kubectl
