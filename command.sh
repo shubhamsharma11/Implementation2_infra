@@ -40,31 +40,5 @@ kubectl scale deployment nginx-deployment --replicas=2
 
 kubectl expose deployment nginx-deployment --name=vueapp-service --type=LoadBalancer --port=80 --protocol=TCP
 
-
-
-
 az aks create -g rgDemo01 -n myAKSCluster --enable-managed-identity --node-count 1 --node-vm-size Standard_D2s_v3 --enable-addons monitoring --enable-msi-auth-for-monitoring  --attach-acr acrshubdemo01 --generate-ssh-keys
 
-
-
-
-
-
-# Ansible Installation Script
-#   resource "null_resource" "ansible_installation" {
-#   provisioner "remote-exec" {
-#       inline = [
-#       "sudo apt-get update",
-#       "sudo apt-get install -y ansible",
-#       ]
-#
-#       connection {
-#       type        = "ssh"
-#       user        = var.connection["username"]
-#       password    = var.connection["password"]
-#       host        = azurerm_public_ip.publicip01.ip_address
-#       }
-#   }
-#
-#   depends_on = [azurerm_virtual_machine.vm01]
-#   }

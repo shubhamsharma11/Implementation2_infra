@@ -21,7 +21,7 @@
           - software-properties-common
         state: present
 
-    - name: Add Microsoft APT repository
+    - name: Install Azure CLI
       become: true
       shell: |
         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
