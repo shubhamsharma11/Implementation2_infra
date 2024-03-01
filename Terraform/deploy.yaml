@@ -8,6 +8,23 @@
       apt:
         update_cache: yes
 
+    - name: Install Python and Python dependencies
+      become: true
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: present
+
+    - name: Upgrade pip
+      become: true
+      pip:
+        name: pip
+        executable: /usr/bin/python3
+        state: latest
+
     - name: Install required packages
       become: true
       apt:
