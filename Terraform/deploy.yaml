@@ -18,12 +18,15 @@
           - python3-setuptools
         state: present
 
-    - name: Upgrade pip
+    - name: Upgrade Pip & Setup Python Env
       become: true
-      pip:
-        name: pip
-        executable: /usr/bin/python3
-        state: latest
+      shell: |
+        sudo apt install python3.10-venv   
+        python3 -m venv venv
+        source venv/bin/activate
+        python3 -m pip install --upgrade pip
+      args:
+        executable: /bin/bash
 
     - name: Install required packages
       become: true
