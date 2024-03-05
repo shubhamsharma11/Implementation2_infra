@@ -24,8 +24,8 @@ resource "azurerm_kubernetes_cluster" "aksdev" {
   }
 
   service_principal {
-    client_id     = "ed0500e9-b2d5-4435-a119-c0cdf7e9088a"
-    client_secret = "77e48ff4-ef17-405e-959d-b597f42a6f20"
+    client_id     = "b3e7b1ea-6299-46b5-a755-b35935c2e50c"
+    client_secret = "GouysOI~rf3DAiaBSC0foejZbfU0_7RNNf"
   }
 
   role_based_access_control_enabled = true
