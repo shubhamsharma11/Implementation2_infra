@@ -8,24 +8,6 @@ resource "azurerm_resource_group" "rgdev" {
   location = var.rg.location
 }
 
-resource "azurerm_azuread_service_principal" "aks_sp" {
-  name = "aksDemoSP"
-}
-
-# Create a Service Principal Password
-resource "azurerm_azuread_service_principal_password" "aks_sp_secret" {
-  service_principal_id = azurerm_azuread_service_principal.aks_sp.id
-  value                = "Password1234!"
-  end_date             = "2025-01-01T01:02:03Z"
-  never_expire         = false
-}
-
-resource "azurerm_role_assignment" "test" {
-  principal_id = azurerm_azuread_service_principal.aks_sp.object_id
-  role_definition_name = "Contributor"
-  scope = azurerm_resource_group.rgdev.id
-}
-
 # Azure Kubernetes Service (AKS)
 resource "azurerm_kubernetes_cluster" "aksdev" {
   name                = "aksDemo01"
@@ -42,8 +24,8 @@ resource "azurerm_kubernetes_cluster" "aksdev" {
   }
 
   service_principal {
-    client_id     = azurerm_azuread_service_principal.aks_sp.application_id
-    client_secret = azurerm_azuread_service_principal_password.aks_sp_secret.value
+    client_id     = "ed0500e9-b2d5-4435-a119-c0cdf7e9088a"
+    client_secret = "77e48ff4-ef17-405e-959d-b597f42a6f20"
   }
 
   role_based_access_control_enabled = true
